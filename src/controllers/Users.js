@@ -6,7 +6,7 @@ class UserController {
     const { name, email, cpf, password } = req.body;
 
     try {
-      const hashedPassword = await HashService(password);
+      const hashedPassword = await HashService.hashPassword(password);
 
       const userCreate = {
         name: name,
@@ -23,7 +23,9 @@ class UserController {
     } catch (e) {
       console.log(e);
       return res.status(500).json({
-        errors: ["Ocorreu um erro desconhecido ao criar seu usuário, tente novamente."]
+        errors: [
+          "Ocorreu um erro desconhecido ao criar seu usuário, tente novamente."
+        ]
       });
     }
   }
