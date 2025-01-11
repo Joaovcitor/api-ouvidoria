@@ -2,19 +2,18 @@ import Reclamacoes from "../db/models/Reclamacoes.js";
 
 class ReclamacoesController {
   async store(req, res) {
-    const { descricao, status, secretariaResponsavel } = req.body;
-    const userId = req.session.userId;
+    const { descricao, secretariaResponsavel } = req.body;
+    const userId = req.user.userId;
     try {
       const reclamacaoCriada = {
         descricao: descricao,
-        status: status.trim() !== "" || "pendente",
         secretariaResponsavel: secretariaResponsavel,
         userId: userId
       };
 
       await Reclamacoes.create(reclamacaoCriada);
 
-      res.status(200).json({ success: ["Reclamação criada com sucesso!"] });
+      res.status(200).json({ message: ["Reclamação criada com sucesso!"] });
     } catch (e) {
       console.log(e);
       res.status(500).json({
@@ -51,7 +50,8 @@ class ReclamacoesController {
   }
 
   async reclamacaoUsuario(req, res) {
-    const userId = req.session.userId;
+    const userId = req.user.userId;
+    console.log(userId);
     try {
       const reclamacoes = await Reclamacoes.findAll({
         where: { userId: userId }
@@ -76,7 +76,7 @@ class ReclamacoesController {
 
     try {
       await Reclamacoes.update(reclamacaoEditada, { where: { id: id } });
-      res.status(200).json({ success: "Reclamação editada com sucesso!" });
+      res.status(200).json({ message: "Reclamação editada com sucesso!" });
     } catch (e) {
       console.log(e);
       return res.status(400).json({

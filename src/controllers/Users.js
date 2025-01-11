@@ -15,9 +15,7 @@ class UserController {
         password: hashedPassword
       };
 
-      const userCreated = await Users.create(userCreate);
-
-      req.session.userId = userCreated.id;
+      await Users.create(userCreate);
 
       return res.status(200).json({ success: ["Usuário criado com sucesso"] });
     } catch (e) {

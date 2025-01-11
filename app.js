@@ -10,7 +10,8 @@ import os from "os";
 
 // importação de rotas;
 import userRoute from "./src/routes/userRoutes.js";
-import reclamacoesRotas from "./src/routes/reclamacoesRouter.js"
+import reclamacoesRotas from "./src/routes/reclamacoesRouter.js";
+import authRoute from "./src/routes/authRoutes.js";
 
 dotenv.config();
 
@@ -54,7 +55,7 @@ class Server {
         resave: false,
         saveUninitialized: false,
         store: new FileStore({
-          logFn: () => { },
+          logFn: () => {},
           path: path.join(os.tmpdir(), "sessions")
         }),
         cookie: {
@@ -79,7 +80,8 @@ class Server {
 
   configureRoutes() {
     this.app.use("/usuario", userRoute);
-    this.app.use("/reclamacoes", reclamacoesRotas)
+    this.app.use("/reclamacoes", reclamacoesRotas);
+    this.app.use("/login", authRoute);
   }
 
   startServer() {

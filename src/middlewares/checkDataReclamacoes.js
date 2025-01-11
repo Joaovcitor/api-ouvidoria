@@ -13,10 +13,6 @@ export default function checkDataReclamacao(req, res, next) {
     errors.push(["Descrição tem que ter entre 4 a 800 caracteres"]);
   }
 
-  if (!status) {
-    errors.push(["Status não pode ficar em branco!"]);
-  }
-
   if (!secretariaResponsavel) {
     errors.push(["Escolha uma opção de secretaria!"]);
   }
