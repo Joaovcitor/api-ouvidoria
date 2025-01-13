@@ -20,7 +20,10 @@ const FileStore = FileStoreFactory(session);
 class Server {
   constructor() {
     this.app = express();
-    this.whiteList = []; // Lista de sites permitidos pelo CORS
+    this.whiteList = [
+      "http://localhost:3000",
+      "https://apiouvidoria.logicmasters.com.br"
+    ]; // Lista de sites permitidos pelo CORS
 
     this.configureMiddlewares();
     this.configureRoutes();
