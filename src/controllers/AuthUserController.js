@@ -51,6 +51,16 @@ class AuthController {
         .json({ errors: "Ocorreu um erro ao autenticar o usuário." });
     }
   }
+
+  async logout(req, res) {
+    try {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: true
+      });
+      res.status(200).json({ message: "Logout feito com sucesso!" });
+    } catch (e) {}
+  }
 }
 
 export default new AuthController();

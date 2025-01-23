@@ -1,4 +1,5 @@
 import Reclamacoes from "../db/models/Reclamacoes.js";
+import Users from "../db/models/Users.js";
 
 class ReclamacoesController {
   async store(req, res) {
@@ -65,13 +66,48 @@ class ReclamacoesController {
     }
   }
 
+  async reclamacaoDaSecretaria(req, res) {
+    const userId = req.user.userId;
+    try {
+      const user = await Users.findOne({ where: { id: userId } });
+      const reclamacoes = await Reclamacoes.findAll({
+        where: { secretariaResponsavel: user.belongingSecretariat }
+      });
+      res.status(200).json({ reclamacoes });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({
+        errors:
+          "Ocorreu um erro desconhecido ao buscar as reclamações da sua secretaria!"
+      });
+    }
+  }
+
+  async reclamacaoSemSecretaria(req, res) {
+    const userId = req.user.userId;
+    try {
+      const user = await Users.findOne({ where: { id: userId } });
+      const reclamacoes = await Reclamacoes.findAll({
+        where: { secretariaResponsavel: "nao sei" }
+      });
+      res.status(200).json({ reclamacoes });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({
+        errors:
+          "Ocorreu um erro desconhecido ao buscar as reclamações da sua secretaria!"
+      });
+    }
+  }
+
   async updateWithResponse(req, res) {
-    const { resposta, secretariaResponsavel } = req.body;
+    const { resposta, secretariaResponsavel, status } = req.body;
     const id = req.params.id;
 
     const reclamacaoEditada = {
       resposta: resposta,
-      secretariaResponsavel: secretariaResponsavel
+      secretariaResponsavel: secretariaResponsavel,
+      status
     };
 
     try {

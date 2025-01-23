@@ -1,12 +1,14 @@
 import Users from "../db/models/Users.js";
 import HashService from "../services/HashService.js";
+import bcrypt from "bcryptjs";
 
 class UserController {
   async store(req, res) {
     const { name, email, cpf, password } = req.body;
 
     try {
-      const hashedPassword = await HashService.hashPassword(password);
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(password, salt);
 
       const userCreate = {
         name: name,

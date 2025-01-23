@@ -3,11 +3,24 @@ const router = express.Router();
 import checkDataReclamacao from "../middlewares/checkDataReclamacoes.js";
 import ReclamacoesController from "../controllers/ReclamacoesController.js";
 import { authenticateJWT } from "../middlewares/authenticateJwt.js";
+import checkRoleUser from "../middlewares/checkRoleUserInRoutePrivate.js";
 
 router.get(
   "/minhas-reclamacoes",
   authenticateJWT,
   ReclamacoesController.reclamacaoUsuario
+);
+router.get(
+  "/reclamacoes-secretaria",
+  authenticateJWT,
+  checkRoleUser,
+  ReclamacoesController.reclamacaoDaSecretaria
+);
+router.get(
+  "/reclamacoes-sem-secretaria",
+  authenticateJWT,
+  checkRoleUser,
+  ReclamacoesController.reclamacaoSemSecretaria
 );
 // rotas proprias
 router.get("/", authenticateJWT, ReclamacoesController.show);
@@ -18,9 +31,10 @@ router.post(
   checkDataReclamacao,
   ReclamacoesController.store
 );
-router.put(
+router.patch(
   "/editar/:id",
   authenticateJWT,
+  checkRoleUser,
   ReclamacoesController.updateWithResponse
 );
 

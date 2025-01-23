@@ -12,6 +12,7 @@ import os from "os";
 import userRoute from "./src/routes/userRoutes.js";
 import reclamacoesRotas from "./src/routes/reclamacoesRouter.js";
 import authRoute from "./src/routes/authRoutes.js";
+import homeRoute from "./src/routes/homeRoute.js";
 
 dotenv.config();
 
@@ -82,6 +83,7 @@ class Server {
   }
 
   configureRoutes() {
+    this.app.use("/", homeRoute);
     this.app.use("/usuario", userRoute);
     this.app.use("/reclamacoes", reclamacoesRotas);
     this.app.use("/login", authRoute);
