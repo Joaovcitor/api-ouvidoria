@@ -23,7 +23,8 @@ class Server {
     this.app = express();
     this.whiteList = [
       "http://localhost:3000",
-      "https://apiouvidoria.logicmasters.com.br"
+      "https://apiouvidoria.logicmasters.com.br",
+      "https://ouvidoriaquixada.netlify.app"
     ]; // Lista de sites permitidos pelo CORS
 
     this.configureMiddlewares();
