@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 
 dotenv.config({
-  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env'
+  path: process.env.NODE_ENV === "production" ? ".env.production" : ".env"
 });
 
 export default {
@@ -28,8 +28,8 @@ export default {
   production: {
     username: process.env.DB_USER || "root",
     password: process.env.DB_PASSWORD || null,
-    database: "database_production",
-    host: process.env.DB_HOST || "localhost",
-    dialect: "mariadb",
-  },
+    database: "ouvidoria_db",
+    host: process.env.DB_HOST,
+    dialect: "mariadb"
+  }
 };

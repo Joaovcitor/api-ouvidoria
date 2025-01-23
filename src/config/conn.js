@@ -13,12 +13,22 @@ if (process.env.NODE_ENV === "production") {
 let sequelize;
 
 // Configuração do Sequelize para testes e ambientes de produção/desenvolvimento
-if (process.env.NODE_ENV === "test") {
-  sequelize = new Sequelize({
-    dialect: "sqlite",
-    storage: process.env.DB_STORAGE,
-    logging: false // Desativa logs de SQL para testes
-  });
+if (process.env.NODE_ENV === "production") {
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+    {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      dialect: process.env.DB_DIALECT,
+      timezone: "-03:00",
+      dialectOptions: {
+        connectTimeout: 60000 // 60 segundos
+      },
+      logging: false // Desativa logs de SQL para produção
+    }
+  );
 } else {
   // Configuração para ambientes de produção e desenvolvimento (com pooling de conexões)
   sequelize = new Sequelize(
