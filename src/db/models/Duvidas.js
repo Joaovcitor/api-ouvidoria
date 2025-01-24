@@ -1,7 +1,7 @@
 import { sequelize } from "../../config/conn.js";
 import { DataTypes, Model } from "sequelize";
-class Reclamacoes extends Model {}
-Reclamacoes.init(
+class Duvidas extends Model {}
+Duvidas.init(
   {
     descricao: {
       type: DataTypes.TEXT,
@@ -35,16 +35,12 @@ Reclamacoes.init(
         model: "Users",
         key: "id"
       }
-    },
-    endereco: {
-      type: DataTypes.STRING,
-      allowNull: true
     }
   },
   {
     sequelize,
-    modelName: "Reclamacoes"
+    modelName: "Duvidas"
   }
 );
 
-export default Reclamacoes;
+export default Duvidas;

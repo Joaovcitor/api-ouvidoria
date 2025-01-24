@@ -13,6 +13,7 @@ import userRoute from "./src/routes/userRoutes.js";
 import reclamacoesRotas from "./src/routes/reclamacoesRouter.js";
 import authRoute from "./src/routes/authRoutes.js";
 import homeRoute from "./src/routes/homeRoute.js";
+import duvidasRoutes from "./src/routes/duvidasRouter.js";
 
 dotenv.config();
 
@@ -74,19 +75,13 @@ class Server {
     this.app.use(express.static("public"));
     this.app.use(express.json());
     this.app.use(cookieParser());
-
-    this.app.use((req, res, next) => {
-      if (req.session.userId) {
-        res.locals.session = req.session;
-      }
-      next();
-    });
   }
 
   configureRoutes() {
     this.app.use("/", homeRoute);
     this.app.use("/usuario", userRoute);
     this.app.use("/reclamacoes", reclamacoesRotas);
+    this.app.use("/duvidas", duvidasRoutes);
     this.app.use("/login", authRoute);
   }
 

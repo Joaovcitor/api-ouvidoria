@@ -1,7 +1,7 @@
-import Reclamacoes from "../db/models/Reclamacoes.js";
+import Duvidas from "../db/models/Duvidas.js";
 import Users from "../db/models/Users.js";
 
-class ReclamacoesController {
+class DuvidasController {
   async store(req, res) {
     const { descricao, secretariaResponsavel, endereco } = req.body;
     const userId = req.user.userId;
@@ -9,18 +9,19 @@ class ReclamacoesController {
       const reclamacaoCriada = {
         descricao: descricao,
         secretariaResponsavel: secretariaResponsavel,
-        endereco: endereco,
         userId: userId
       };
 
-      await Reclamacoes.create(reclamacaoCriada);
+      console.log(reclamacaoCriada);
 
-      res.status(200).json({ message: ["Reclamação criada com sucesso!"] });
+      await Duvidas.create(reclamacaoCriada);
+
+      res.status(200).json({ message: ["dúvida criada com sucesso!"] });
     } catch (e) {
       console.log(e);
       res.status(500).json({
         errors: [
-          "Ocorreu um erro desconhecido ao criar sua reclamação! Tente novamente"
+          "Ocorreu um erro desconhecido ao criar sua dúvida! Tente novamente"
         ]
       });
     }
@@ -28,12 +29,12 @@ class ReclamacoesController {
 
   async show(req, res) {
     try {
-      const reclamacoes = await Reclamacoes.findAll();
-      res.status(200).json({ reclamacoes });
+      const duvidas = await Duvidas.findAll();
+      res.status(200).json({ duvidas });
     } catch (e) {
       console.log(e);
       res.status(500).json({
-        errors: "Ocorreu um erro desconhecido ao buscar as reclamações!"
+        errors: "Ocorreu um erro desconhecido ao buscar as dúvidas!"
       });
     }
   }
@@ -41,62 +42,62 @@ class ReclamacoesController {
   async index(req, res) {
     const id = req.params.id;
     try {
-      const reclamacao = await Reclamacoes.findOne({ where: { id: id } });
+      const reclamacao = await Duvidas.findOne({ where: { id: id } });
       res.status(200).json({ reclamacao });
     } catch (e) {
       console.log(e);
       res.status(500).json({
-        errors: "Ocorreu um erro desconhecido ao buscar  reclamação!"
+        errors: "Ocorreu um erro desconhecido ao buscar  dúvida!"
       });
     }
   }
 
-  async reclamacaoUsuario(req, res) {
+  async duvidasUsuarios(req, res) {
     const userId = req.user.userId;
     console.log(userId);
     try {
-      const reclamacoes = await Reclamacoes.findAll({
+      const duvidas = await Duvidas.findAll({
         where: { userId: userId }
       });
-      res.status(200).json({ reclamacoes });
+      res.status(200).json({ duvidas });
     } catch (e) {
       console.log(e);
       res.status(500).json({
-        errors: "Ocorreu um erro desconhecido ao buscar as reclamações!"
+        errors: "Ocorreu um erro desconhecido ao buscar as dúvidas!"
       });
     }
   }
 
-  async reclamacaoDaSecretaria(req, res) {
+  async duvidasDaSecretaria(req, res) {
     const userId = req.user.userId;
     try {
       const user = await Users.findOne({ where: { id: userId } });
-      const reclamacoes = await Reclamacoes.findAll({
+      const duvidas = await Duvidas.findAll({
         where: { secretariaResponsavel: user.belongingSecretariat }
       });
-      res.status(200).json({ reclamacoes });
+      res.status(200).json({ duvidas });
     } catch (e) {
       console.log(e);
       res.status(500).json({
         errors:
-          "Ocorreu um erro desconhecido ao buscar as reclamações da sua secretaria!"
+          "Ocorreu um erro desconhecido ao buscar as dúvidas da sua secretaria!"
       });
     }
   }
 
-  async reclamacaoSemSecretaria(req, res) {
+  async duvidasSemSecretaria(req, res) {
     const userId = req.user.userId;
     try {
       const user = await Users.findOne({ where: { id: userId } });
-      const reclamacoes = await Reclamacoes.findAll({
+      const duvidas = await Duvidas.findAll({
         where: { secretariaResponsavel: "nao sei" }
       });
-      res.status(200).json({ reclamacoes });
+      res.status(200).json({ duvidas });
     } catch (e) {
       console.log(e);
       res.status(500).json({
         errors:
-          "Ocorreu um erro desconhecido ao buscar as reclamações da sua secretaria!"
+          "Ocorreu um erro desconhecido ao buscar as dúvidas da sua secretaria!"
       });
     }
   }
@@ -112,15 +113,15 @@ class ReclamacoesController {
     };
 
     try {
-      await Reclamacoes.update(reclamacaoEditada, { where: { id: id } });
-      res.status(200).json({ message: "Reclamação editada com sucesso!" });
+      await Duvidas.update(reclamacaoEditada, { where: { id: id } });
+      res.status(200).json({ message: "Dúvida editada com sucesso!" });
     } catch (e) {
       console.log(e);
       return res.status(400).json({
-        errors: ["Ocorreu um erro desconhecido ao responder a reclamação!"]
+        errors: ["Ocorreu um erro desconhecido ao responder a Dúvida!"]
       });
     }
   }
 }
 
-export default new ReclamacoesController();
+export default new DuvidasController();
