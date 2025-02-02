@@ -12,8 +12,6 @@ class DuvidasController {
         userId: userId
       };
 
-      console.log(reclamacaoCriada);
-
       await Duvidas.create(reclamacaoCriada);
 
       res.status(200).json({ message: ["dúvida criada com sucesso!"] });

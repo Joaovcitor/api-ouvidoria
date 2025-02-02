@@ -1,6 +1,8 @@
 import { sequelize } from "../../config/conn.js";
 import { DataTypes, Model } from "sequelize";
+
 class Reclamacoes extends Model {}
+
 Reclamacoes.init(
   {
     descricao: {
@@ -30,7 +32,6 @@ Reclamacoes.init(
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-
       references: {
         model: "Users",
         key: "id"

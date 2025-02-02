@@ -7,6 +7,8 @@ import cors from "cors";
 import helmet from "helmet";
 import path from "path";
 import os from "os";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 // importação de rotas;
 import userRoute from "./src/routes/userRoutes.js";
@@ -14,10 +16,18 @@ import reclamacoesRotas from "./src/routes/reclamacoesRouter.js";
 import authRoute from "./src/routes/authRoutes.js";
 import homeRoute from "./src/routes/homeRoute.js";
 import duvidasRoutes from "./src/routes/duvidasRouter.js";
+import fotoRoute from "./src/routes/fotoRoute.js";
 
 dotenv.config();
 
 const FileStore = FileStoreFactory(session);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// helmet({
+//   crossOriginResourcePolicy: false
+// });
 
 class Server {
   constructor() {
@@ -39,7 +49,7 @@ class Server {
         if (this.whiteList.indexOf(origin) !== -1 || !origin) {
           callback(null, true);
         } else {
-          callback(new Error("Not allowed by cors"));
+          callback(new Error("Not allowed by CORS"));
         }
       },
       credentials: true
@@ -65,14 +75,14 @@ class Server {
           path: path.join(os.tmpdir(), "sessions")
         }),
         cookie: {
-          secure: false,
+          secure: true,
           maxAge: 28800000,
           httpOnly: true
         }
       })
     );
-
-    this.app.use(express.static("public"));
+    this.app.use("/uploads", express.static(join(__dirname, "uploads")));
+    // this.app.use(express.static("uploads"));
     this.app.use(express.json());
     this.app.use(cookieParser());
   }
@@ -83,6 +93,7 @@ class Server {
     this.app.use("/reclamacoes", reclamacoesRotas);
     this.app.use("/duvidas", duvidasRoutes);
     this.app.use("/login", authRoute);
+    this.app.use("/fotos", fotoRoute);
   }
 
   startServer() {

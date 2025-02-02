@@ -39,7 +39,6 @@ if (process.env.NODE_ENV === "production") {
       host: process.env.DB_HOST,
       port: process.env.DB_PORT || 3306, // Porta do banco de dados
       dialect: process.env.DB_DIALECT, // Tipo do banco (mysql, mariadb, etc)
-      timezone: "-03:00", // Fuso horário
       dialectOptions: {
         connectTimeout: 60000 // Tempo de espera para conexão (60 segundos)
       },

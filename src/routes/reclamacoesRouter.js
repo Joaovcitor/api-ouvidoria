@@ -4,6 +4,7 @@ import checkDataReclamacao from "../middlewares/checkDataReclamacoes.js";
 import ReclamacoesController from "../controllers/ReclamacoesController.js";
 import { authenticateJWT } from "../middlewares/authenticateJwt.js";
 import checkRoleUser from "../middlewares/checkRoleUserInRoutePrivate.js";
+// import { upload } from "../config/multerConfig.js";
 
 router.get(
   "/minhas-reclamacoes",
@@ -28,7 +29,7 @@ router.get("/:id", authenticateJWT, ReclamacoesController.index);
 router.post(
   "/criar",
   authenticateJWT,
-  checkDataReclamacao,
+  // upload.single("Fotos"),
   ReclamacoesController.store
 );
 router.patch(

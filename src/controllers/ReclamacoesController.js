@@ -1,9 +1,11 @@
 import Reclamacoes from "../db/models/Reclamacoes.js";
 import Users from "../db/models/Users.js";
+import Fotos from "../db/models/Fotos.js";
 
 class ReclamacoesController {
   async store(req, res) {
     const { descricao, secretariaResponsavel, endereco } = req.body;
+
     const userId = req.user.userId;
     try {
       const reclamacaoCriada = {
@@ -13,9 +15,11 @@ class ReclamacoesController {
         userId: userId
       };
 
-      await Reclamacoes.create(reclamacaoCriada);
+      const reclamacao = await Reclamacoes.create(reclamacaoCriada);
 
-      res.status(200).json({ message: ["Reclamação criada com sucesso!"] });
+      res
+        .status(200)
+        .json({ reclamacao, message: ["Reclamação criada com sucesso!"] });
     } catch (e) {
       console.log(e);
       res.status(500).json({
@@ -28,7 +32,11 @@ class ReclamacoesController {
 
   async show(req, res) {
     try {
-      const reclamacoes = await Reclamacoes.findAll();
+      const reclamacoes = await Reclamacoes.findAll({
+        include: {
+          model: Fotos
+        }
+      });
       res.status(200).json({ reclamacoes });
     } catch (e) {
       console.log(e);
@@ -56,7 +64,11 @@ class ReclamacoesController {
     console.log(userId);
     try {
       const reclamacoes = await Reclamacoes.findAll({
-        where: { userId: userId }
+        where: { userId: userId },
+        include: {
+          model: Fotos,
+          as: "Fotos"
+        }
       });
       res.status(200).json({ reclamacoes });
     } catch (e) {
