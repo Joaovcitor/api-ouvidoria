@@ -25,9 +25,9 @@ const FileStore = FileStoreFactory(session);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// helmet({
-//   crossOriginResourcePolicy: false
-// });
+helmet({
+  crossOriginResourcePolicy: false
+});
 
 class Server {
   constructor() {
@@ -52,7 +52,8 @@ class Server {
           callback(new Error("Not allowed by CORS"));
         }
       },
-      credentials: true
+      credentials: true, // Permite o envio de cookies
+      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"] // Cabeçalhos permitidos
     };
 
     this.app.use(cors(corsOptions));
@@ -63,6 +64,19 @@ class Server {
         extended: true
       })
     );
+
+    this.app.use((req, res, next) => {
+      // res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, OPTIONS, PUT, DELETE"
+      );
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization"
+      );
+      next();
+    });
 
     this.app.use(
       session({
