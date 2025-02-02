@@ -35,7 +35,7 @@ Fotos.init(
     url: {
       type: Sequelize.VIRTUAL,
       get() {
-        return `http://localhost:3004/uploads/${this.getDataValue("filename")}`;
+        return `https://apiouvidoria.logicmasters.com.br/uploads/${this.getDataValue("filename")}`;
       }
     }
   },
